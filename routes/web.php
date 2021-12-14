@@ -20,10 +20,10 @@ Route::get('/seed-collection', function () {
     return view('seed-collection');
 });
 Route::get('/ido', function () {
-    return view('welcome');
+    return view('ido');
 });
 Route::get('/ieo', function () {
-    return view('welcome');
+    return view('ieo');
 });
 
 Route::get('/sale/verify/{address}/credit/{block}',[\App\Http\Controllers\ScanBSC::class, 'buys']);
