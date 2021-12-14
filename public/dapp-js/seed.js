@@ -113,7 +113,7 @@ const Seed = {
                          WALLET.flag = 0;
                          notifySuccess('Transaction Successful');
                          WALLET.showModal(
-                             'We will inform the community when claiming opens. Stay glued to our community.',
+                             'We will inform you when claiming opens. Stay tuned.',
                              'Amount : ' + WALLET.web3.utils.fromWei(_weiSpending,'ether')  + currency,
                              'Number Of Tokens : '+tokens+' MULA',
                              'Rate : 0.025',
