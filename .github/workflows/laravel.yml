@@ -1,0 +1,18 @@
+name: Mula
+
+on:
+  push:
+    branches: [ master ]
+jobs:
+  laravel-deployer:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Deploy to production
+      uses: appleboy/ssh-action@master
+      with:
+          username: "PUT_YOUR_VPS_USERNAME"
+          host: "PUT_YOUR_VPS_IP"
+          password: "PUT_YOUR_VPS_PASSWORD"
+          script: 'RUN_YPUR_DEPLOYMENT_SCRIPT' #cd /var/www/html/MerqataAPI && ./server_deploy.sh
