@@ -141,7 +141,7 @@ const Seed = {
             to: CONTRACT.SeedRound._address,
             from: WALLET.account,
             data: CONTRACT.SeedRound.methods.participateBNB(WALLET.BNB_ROUND_ID).encodeABI(),
-            gas:"0x4DD0F",
+            gas:"0x4DF44",//4DDB4
             gasPrice: "0x2CB417800",
             value: WALLET.web3.utils.fromDecimal(WALLET.web3.utils.toBN(_weiSpending))
         };
@@ -169,7 +169,7 @@ const Seed = {
             to: CONTRACT.SeedRound._address,
             from: WALLET.account,
             data: CONTRACT.SeedRound.methods.participateUSD(WALLET.BNB_ROUND_ID).encodeABI(),
-            gas:"0x4DD0F",
+            gas:"0x4DF44",//0x4DD0F
             gasPrice: "0x2CB417800",
         };
         let tokens = WALLET.tokenExpected(currency,value,Seed.rate);
@@ -220,7 +220,7 @@ const Seed = {
             to: CONTRACT.SeedRound._address,
             from: WALLET.account,
             data: CONTRACT.SeedRound.methods._collectMula(WALLET.account).encodeABI(),
-            gas:"0x4DD0F",
+            gas:"0x4DF44",
             gasPrice: "0x2CB417800",
         };
         //let tokens = WALLET.tokenExpected(currency,_weiSpending,Seed.rate);
