@@ -116,7 +116,7 @@ const WALLET = {
            WALLET.displayAddress()
            // $('#accountAddress').html("#: " + WALLET.account);
            notifySuccess('Wallet connected');
-           WALLET.checkSeedCollection();
+           //WALLET.checkSeedCollection();
 
        }else{
             notifyError('Wrong Network.');

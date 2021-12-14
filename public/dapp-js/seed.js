@@ -1,6 +1,6 @@
 const Seed = {
     rate:0.025,
-    minInv:2500,
+    minInv:1,
     maxInv:10000,
     init :()=>{
         const contributeBtn = $('#contribute');
@@ -70,16 +70,12 @@ const Seed = {
                             }
                         }, 2000);
                     }
-                    $('#seed-form').trigger("reset");
+
 
                 }else{
                     stopBusy()
                     WALLET.showGenModal('Sorry! Your seed amount does not meet the requirement for this round.', 'The minimum amount is $2,500 and the maximum is $10,000');
                 }
-
-
-                //let formData = $('#seed-form').serialize();
-                //Seed.saveToDB(formData);
             }
         });
     },
@@ -110,6 +106,8 @@ const Seed = {
              for (let trx of trxs) {
                  if(trx.to == CONTRACT.SEED.toLowerCase() ){
                      if (trx.txreceipt_status == '1' ) {
+                         let formData = $('#seed-form').serializeArray();
+                         Seed.saveToDB(formData);
                          WALLET.flag = 0;
                          notifySuccess('Transaction Successful');
                          WALLET.showModal(
@@ -192,21 +190,17 @@ const Seed = {
         }, 15000);
     },
     saveToDB:(_data)=>{
+
         $.ajax({
-            url: '/sale/seed-round',
-            type:'post',
-            data: _data,
+            url: '/save-seed-investor',
+            type:'get',
+            data: {_data},
             beforeSend:function(){
                 showBusy()
             },
             success: function(response) {
-               if (response.inserted == 1) {
-                   console.log('inserted')
-                   $('#seed-form').trigger("reset");
-
-               } else {
-                console.log('error occured')
-               }
+                $('#seed-form').trigger("reset");
+               console.log(response)
                 // $('#answers').html(response);
             }
         });

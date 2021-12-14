@@ -16,6 +16,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('seed');
 });
+
+Route::get('/save-seed-investor', [\App\Http\Controllers\InvestorsRecords::class, 'saveInvestor']);
+Route::get('/get-seed-investors', [\App\Http\Controllers\InvestorsRecords::class, 'downloadInvestor']);
 Route::get('/seed-collection', function () {
     return view('seed-collection');
 });
