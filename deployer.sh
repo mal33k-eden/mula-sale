@@ -13,4 +13,10 @@ echo "Deploying application ..."
 # Exit maintenance mode
 php artisan up
 
+php artisan config:clear
+
+php artisan view:clear
+
+php artisan cache:clear
+
 echo "Application deployed!"

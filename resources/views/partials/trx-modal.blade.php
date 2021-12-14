@@ -1,6 +1,6 @@
 <!--popup form start-->
 <div class="modal fade success-trx " tabindex="-1" role="dialog" aria-labelledby="success-trx" aria-hidden="true">
-    <div class="modal-dialog modal-md ">
+    <div class="modal-dialog modal-dialog-centered modal-md ">
         <div class="modal-content bg-primary">
             <div class="modal-header">
                 <h5 class="modal-title">Thanks for investing in Mula</h5>
@@ -18,7 +18,7 @@
             </div>
             <div class="modal-footer">
 
-                <a href="#" class="btn btn-success trx-hash">Verify Trx</a>
+                <a href="#" target="_blank" class="btn btn-success trx-hash">Verify Trx</a>
             </div>
         </div>
     </div>

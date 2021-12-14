@@ -46,7 +46,7 @@ const Seed = {
                        if (WALLET.allowance == true) {
                            notifySuccess('USDT transactions will take a bit longer. Kindly hold while processing completes.')
                            setTimeout(() => {
-                            Seed.contributeUSD(value);
+                            Seed.contributeUSD(currency,value);
                             WALLET.allowance = null;
                            }, 2000);
                         clearInterval(interval)
@@ -84,37 +84,36 @@ const Seed = {
     },
     checkTransaction: async (interval,_weiSpending,currency,tokens)=>{
 
-        console.log(parseFloat(tokens).toLocaleString(0))
         WALLET.flag++;
         let res = await Seed.verifyContributionOnBSC();
         let data = res.data;
-        console.log(data)
         if(data.status == 1){
              let trxs = data.result;
              for (let trx of trxs) {
-                 if(trx.to == CONTRACT.SEED.toLowerCase() && trx.value == _weiSpending){
-                    if (trx.isError == 0) {
-                        WALLET.flag = 0;
-                        notifySuccess('Transaction Successful');
-                        WALLET.showModal(
-                            'We will inform the community when claiming opens. Stay glued to our community.',
-                            'Amount : ' + WALLET.web3.utils.fromWei(_weiSpending,'ether')  + currency,
-                            'Number Of Tokens : '+tokens+' MULA',
-                            'Rate : 0.025',
-                            trx.hash
-                        );
-                        stopBusy()
-                     clearInterval(interval);
+                 if(trx.to == CONTRACT.SEED.toLowerCase() ){
+                     if (trx.txreceipt_status == '1' ) {
+                         WALLET.flag = 0;
+                         notifySuccess('Transaction Successful');
+                         WALLET.showModal(
+                             'We will inform the community when claiming opens. Stay glued to our community.',
+                             'Amount : ' + WALLET.web3.utils.fromWei(_weiSpending,'ether')  + currency,
+                             'Number Of Tokens : '+tokens+' MULA',
+                             'Rate : 0.025',
+                             trx.hash
+                         );
+                         stopBusy()
+                         clearInterval(interval);
                      } else {
                          console.log(trx.isError)
                          console.log(trx.hash)
-                        notifyError('Transaction Failed')
-                        stopBusy()
-                        clearInterval(interval);
-                        notifyError('Transaction Failed')
+                         notifyError('Transaction Failed')
+                         stopBusy()
+                         clearInterval(interval);
+                         notifyError('Transaction Failed')
                      }
 
                  }
+
 
              }
          }
@@ -147,7 +146,7 @@ const Seed = {
 
         }, 15000);
     },
-    contributeUSD:(value)=>{
+    contributeUSD:(currency,value)=>{
         WALLET.flag = 1;
         let _weiSpending = WALLET.web3.utils.toWei(value); //in wei
         let trxParam = {
@@ -157,13 +156,13 @@ const Seed = {
             gas:"0x4DD0F",
             gasPrice: "0x2CB417800",
         };
-        // let tokens = WALLET.tokenExpected(currency,_weiSpending,Seed.rate);
+        let tokens = WALLET.tokenExpected(currency,value,Seed.rate);
         WALLET.sendTrx(trxParam);
         setTimeout(function(){
             console.error("Did not get response in 15 seconds");
             let interval = setInterval(function(){
                 if(WALLET.flag > 0 && WALLET.flag <= 6){
-                    Seed.checkTransaction(interval,_weiSpending);
+                    Seed.checkTransaction(interval,_weiSpending,currency,tokens);
                 }else{
                     WALLET.flag = 0;
                    notifyError('Transaction Failed')

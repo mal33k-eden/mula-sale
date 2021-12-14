@@ -3,8 +3,8 @@
         <div class="container d-flex align-items-center justify-content-lg-between position-relative">
             <a href="/" class="navbar-brand d-flex align-items-center mb-md-0 text-decoration-none">
                 <img src="{{asset('site-assets/img/icon.png')}}" alt="logo" class="img-fluid dapp-logo" width="150"/>
-                <a href="javascript:(0);"  class="btn btn-success connect-wallet">Connect To A Wallet</a>
-                <a href="javascript:(0);"  class="btn btn-warning connected-wallet"> <span class="text-primary h6"> <i class="fad fa-dot-circle text-success"></i> BSC - </span> <span class="h6 text-primary" id="accountAddress"></span></a>
+                <a href="javascript:(0);"  class="btn btn-success btn-sm connect-wallet">Connect To A Wallet (BSC Network)</a>
+                <a href="javascript:(0);"  class="btn btn-warning btn-sm connected-wallet"> <span class="text-primary "> <i class="fad fa-dot-circle text-success"></i> BSC - </span> <span class="h6 text-primary" id="accountAddress"></span></a>
                 <!-- popup-with-form -->
             </a>
             <!-- <a class="navbar-toggler position-absolute right-0 border-0" href="#offcanvasWithBackdrop" role="button">

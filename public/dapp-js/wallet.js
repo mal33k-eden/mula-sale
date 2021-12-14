@@ -1,11 +1,12 @@
 const connectBtn = document.querySelector('.connect-wallet');
+const connectedBtn = document.querySelector('.connected-wallet');
 const walletBtn = document.querySelector('.connected-wallet');
 const Web3Modal = window.Web3Modal.default;
         const WalletConnectProvider = window.WalletConnectProvider.default;
         const providerOptions = {
             // Example with WalletConnect provider
             walletconnect: {
-                
+
                 package: WalletConnectProvider,
                 options: {
                     infuraId: "f67b5c76814745f5ba04d5bb8d37a9f1",
@@ -34,17 +35,18 @@ const WALLET = {
     init:()=>{
         WALLET.configureWallectConnect();
         connectBtn.addEventListener('click', () => {WALLET.connectWallet();});
+        connectedBtn.addEventListener('click', () => {WALLET.clipAddress();});
         $('.connect-wallet').hide();
         $('.connected-wallet').hide();
-        $('.pay-trigger').prop('disabled',true); 
+        $('.pay-trigger').prop('disabled',true);
         WALLET.configureWeb3();
 
-        
-         
+
+
         // $('#trx-success-popup').on('hidden.bs.modal', function () {
         //     location.reload();
         // })
-       
+
         // addressDiv.hide();
     },
     configureWallectConnect:()=>{
@@ -53,16 +55,15 @@ const WALLET = {
         WALLET.web3 = new Web3(NODE);
         if (WALLET.account == null) {
             $(".connect-wallet").show();
-            $('.connected-wallet').hide();   
+            $('.connected-wallet').hide();
         }else{
-            $(".connect-wallet").hide();
-            $('.connected-wallet').show();
-            $('#accountAddress').html("#: " + WALLET.account);
+            WALLET.enforceBSCNetwork();
+
         }
         WALLET.chainLinkPrice()
     },
     connectWallet: async ()=>{
-    
+
         try {
             WALLET.provider = await web3Modal.connect();
         } catch(e) {
@@ -94,16 +95,31 @@ const WALLET = {
             notifyError('Looks like you have not unlocked your metamask wallet. check your wallet & try again');
             $(".connect-wallet").show();
             $('.connected-wallet').hide();
-            $('.pay-trigger').prop('disabled',true); 
+            $('.pay-trigger').prop('disabled',true);
         } else if (accounts[0] !== WALLET.account) {
             WALLET.account = accounts[0];
-            WALLET.displayAddress()
-            $(".connect-wallet").hide();
-            $('.connected-wallet').show();
-            $('.pay-trigger').prop('disabled',false); 
-            notifySuccess('Wallet connected');
-            WALLET.checkSeedCollection();
+
+
+
+            WALLET.enforceBSCNetwork();
             // WALLET.onDisconnect()
+        }
+    },
+    enforceBSCNetwork:async ()=>{
+        const chainId = await WALLET.web3.eth.getChainId();
+
+       if(chainId == '97'){
+
+           $(".connect-wallet").hide();
+           $('.connected-wallet').show();
+           $('.pay-trigger').prop('disabled',false);
+           WALLET.displayAddress()
+           // $('#accountAddress').html("#: " + WALLET.account);
+           notifySuccess('Wallet connected');
+           WALLET.checkSeedCollection();
+
+       }else{
+            notifyError('Wrong Network.');
         }
     },
     checkSeedCollection:async ()=>{
@@ -117,23 +133,23 @@ const WALLET = {
             }
             console.log(collection)
         });
- 
+
     },
     onDisconnect: async ()=> {
 
         console.log("Killing the wallet connection", WALLET.provider);
-      
+
         // TODO: Which providers have close method?
         if(WALLET.provider.close) {
           await WALLET.provider.close();
-      
+
           // If the cached provider is not cleared,
           // WalletConnect will default to the existing session
           // and does not allow to re-scan the QR code with a new wallet.
           // Depending on your use case you may want or want not his behavir.
           await WALLET.web3Modal.clearCachedProvider();
           WALLET.provider = null;
-          
+
         }
         window.location.reload();
     },
@@ -154,7 +170,7 @@ const WALLET = {
         let total = 0;
         if(currency == 'BNB'){
             total =  WALLET.web3.utils.toWei(giving) / WALLET.web3.utils.toWei((((rate) /WALLET.bnb_price).toFixed(8)).toString());
-            
+
             total = total.toString().split(".")[0];
         }else{
             total = WALLET.web3.utils.toWei(giving) / WALLET.web3.utils.toWei((((rate)).toFixed(8)).toString());
@@ -203,7 +219,7 @@ const WALLET = {
                     WALLET.flag = 0;
                     clearInterval(interval);
                     WALLET.allowance = false;
-                    
+
                 }
             }, 5000);
 
@@ -253,7 +269,7 @@ const WALLET = {
                     );
                     stopBusy()
                  clearInterval(interval);
-                    
+
                 }
 
             }
@@ -285,7 +301,7 @@ const WALLET = {
             }, 5000);
 
         }, 15000);
-    }, 
+    },
     verifyMulaCredit:async ()=>{
         try {
             return await axios.get('/sale/verify/'+WALLET.account+'/credit/' + WALLET.block)
@@ -309,6 +325,17 @@ const WALLET = {
         $('.trx-hash').attr('href', bscScan);
 
         $('.success-trx').modal('show');
+    },
+    clipAddress:()=>{
+
+        var textarea = document.createElement("textarea");
+        textarea.textContent = WALLET.account;
+        textarea.style.position = "fixed"; // Prevent scrolling to bottom of page in MS Edge.
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textarea);
+        notifySuccess('address copied')
     }
 }
 
