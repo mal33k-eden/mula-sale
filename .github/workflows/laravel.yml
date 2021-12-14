@@ -12,7 +12,7 @@ jobs:
     - name: Deploy to production
       uses: appleboy/ssh-action@master
       with:
-          username: "PUT_YOUR_VPS_USERNAME"
-          host: "PUT_YOUR_VPS_IP"
-          password: "PUT_YOUR_VPS_PASSWORD"
+          host: ${{ secrets.MULA_HOST }}
+          username: ${{ secrets.MULA_USER }}
+          key: ${{ secrets.MULA_KEY }}
           script: 'RUN_YPUR_DEPLOYMENT_SCRIPT' #cd /var/www/html/MerqataAPI && ./server_deploy.sh
