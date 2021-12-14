@@ -15,4 +15,4 @@ jobs:
           host: ${{ secrets.MULA_HOST }}
           username: ${{ secrets.MULA_USER }}
           password: ${{ secrets.MULA_PASS }}
-          script: 'cd /var/www/mula-sale && ./deployer.sh'
+          script: 'cd /var/www/mula-sale && ./deployr.sh'
