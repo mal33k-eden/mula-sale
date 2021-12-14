@@ -1,0 +1,29 @@
+.logo-white{
+    width: 300px !important;
+}
+.logo-color{
+    width: 300px !important;
+}
+.dapp-logo{
+    width: 80px !important;
+    
+}
+.logo-color{
+    width: 300px !important;
+}
+.blockMsg{
+    border: 3px solid rgba(170, 170, 170, 0) !important;
+    background-color: rgba(255, 255, 255, 0) !important;
+}
+.modal-header button{
+   border: aliceblue;  
+}
+.modal-header span{ 
+    color: var(--bs-danger); 
+ }
+ /* .modal-body-content{ 
+     background-image: url('/images/mula-coin.png') ;
+     background-repeat: no-repeat;
+     background-size:contain;
+     background-position:right;  
+ } */
