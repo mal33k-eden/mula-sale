@@ -326,6 +326,13 @@ const WALLET = {
 
         $('.success-trx').modal('show');
     },
+    showGenModal:(title,subtitle)=>{
+
+        $('._title').html(title);
+        $('._sub_title').html(subtitle);
+
+        $('.gen-modal').modal('show');
+    },
     clipAddress:()=>{
 
         var textarea = document.createElement("textarea");

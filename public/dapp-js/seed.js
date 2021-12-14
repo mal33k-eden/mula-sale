@@ -1,5 +1,7 @@
 const Seed = {
     rate:0.025,
+    minInv:2500,
+    maxInv:10000,
     init :()=>{
         const contributeBtn = $('#contribute');
         const collectBtn = $('#collect');
@@ -17,7 +19,16 @@ const Seed = {
         $("#amount").keyup(()=>{Seed.handleBnBAmount($("#amount").val(),$('input:radio[name="currency"]:checked').val())});
         Seed.priceChecker();
     },
+    validateGiving:()=>{
+        let giving = $('#amount').val();
+        let currency = $('input:radio[name="currency"]:checked').val();
+        if(currency =='BNB'){
+            giving =  giving * WALLET.bnb_price;
+        }
+        return giving >= Seed.minInv && giving <= Seed.maxInv;
+    },
     contributeForm:()=>{
+
         $('#seed-form').validate({
             rules:{
                 currency:{ required:true },
@@ -36,28 +47,35 @@ const Seed = {
                 WALLET.flag = 1
                 let value = $('#amount').val();
                 let currency = $('input:radio[name="currency"]:checked').val();
-                if (currency =='BNB') {
-                    Seed.contributeBNB(currency,value);
-                } else {
-                    notifySuccess('USDT transactions will take a bit longer. Kindly hold while processing completes.')
-                    WALLET.createUSDAllowance(CONTRACT.SEED,value);
-                    let interval = setInterval(() => {
-                        console.log(WALLET.allowance)
-                       if (WALLET.allowance == true) {
-                           notifySuccess('USDT transactions will take a bit longer. Kindly hold while processing completes.')
-                           setTimeout(() => {
-                            Seed.contributeUSD(currency,value);
-                            WALLET.allowance = null;
-                           }, 2000);
-                        clearInterval(interval)
-                       }
-                        if (WALLET.allowance == false) {
-                            stopBusy()
-                            clearInterval(interval)
-                        }
-                    }, 2000);
+                if (Seed.validateGiving() == true){
+                    if (currency =='BNB') {
+                        Seed.contributeBNB(currency,value);
+                    }
+                    else {
+                        notifySuccess('USDT transactions will take a bit longer. Kindly hold while processing completes.')
+                        WALLET.createUSDAllowance(CONTRACT.SEED,value);
+                        let interval = setInterval(() => {
+                            console.log(WALLET.allowance)
+                            if (WALLET.allowance == true) {
+                                notifySuccess('USDT transactions will take a bit longer. Kindly hold while processing completes.')
+                                setTimeout(() => {
+                                    Seed.contributeUSD(currency,value);
+                                    WALLET.allowance = null;
+                                }, 2000);
+                                clearInterval(interval)
+                            }
+                            if (WALLET.allowance == false) {
+                                stopBusy()
+                                clearInterval(interval)
+                            }
+                        }, 2000);
+                    }
+                    $('#seed-form').trigger("reset");
+
+                }else{
+                    stopBusy()
+                    WALLET.showGenModal('Sorry! Your seed amount does not meet the requirement for this round.', 'The minimum amount is $2,500 and the maximum is $10,000');
                 }
-                $('#seed-form').trigger("reset");
 
 
                 //let formData = $('#seed-form').serialize();

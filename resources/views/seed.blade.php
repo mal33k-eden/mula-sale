@@ -129,5 +129,6 @@
             </div>
         </div>
         @include('partials/trx-modal')
+        @include('partials/gen-modal')
     </section>
 @endsection()
