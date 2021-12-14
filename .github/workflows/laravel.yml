@@ -14,5 +14,5 @@ jobs:
       with:
           host: ${{ secrets.MULA_HOST }}
           username: ${{ secrets.MULA_USER }}
-          password: ${{ secrets.MULA_PASSWORD }}
+          password: ${{ secrets.MULA_PASS }}
           script: 'RUN_YPUR_DEPLOYMENT_SCRIPT' #cd /var/www/html/MerqataAPI && ./server_deploy.sh
