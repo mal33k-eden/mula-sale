@@ -5,7 +5,7 @@
             <div class="row align-items-center justify-content-between">
                 <div class="col-xl-5 col-lg-5 col-md-12">
                     <div class="testimonial-tab-slider-wrap mt-5">
-                        <h3 class="text-white display-9">M-u-la Token Sale</h3>
+                        <h3 class="text-white display-9">Mula Token Sale</h3>
                         <h1 class="fw-bold text-white display-5">Seed Round</h1>
                         <p>Mula Seed Round investors will be able to move only 5% of their tokens at TGE, 20% on month 2, 3 and 4 after TGE and the remaining 35% on month 12.</p>
                         <p>If you are investing in BNB, the Mula dapp will make a conversion of your BNB value to USDT at the current price before emitting the MULA tokens to your wallet.</p>
