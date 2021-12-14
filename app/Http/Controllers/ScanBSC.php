@@ -10,7 +10,7 @@ class ScanBSC extends Controller
     //
     //https://api.bscscan.com/  https://api-testnet.bscscan.com/
     function buys($address,$startBlock){
-        $response = Http::get('https://api-testnet.bscscan.com?', [
+        $response = Http::get(env('BSC_API_ENDPOINT'), [
             'module'=>'account',
             'action'=>'tokentx',
             'address' => $address,

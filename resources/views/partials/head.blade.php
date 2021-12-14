@@ -51,7 +51,7 @@
     <link rel="stylesheet" href="{{asset('site-assets/css/mula.css')}}">
     <!--custom css end-->
     <script>
-        const NODE = 'https://speedy-nodes-nyc.moralis.io/ebccb067e0667fe39551799d/bsc/testnet';
+        const NODE = 'https://speedy-nodes-nyc.moralis.io/ebccb067e0667fe39551799d/bsc/mainnet';
 
     </script>
 </head>
