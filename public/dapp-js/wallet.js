@@ -321,7 +321,7 @@ const WALLET = {
         $('._numOfTokens').html(numOfTokens);
         $('._rate').html(rate);
         $('._trxHash').html(trxHash);
-        var bscScan = "https://testnet.bscscan.com/tx/"+trxHash;
+        var bscScan = "https://bscscan.com/tx/"+trxHash;
         $('.trx-hash').attr('href', bscScan);
 
         $('.success-trx').modal('show');
