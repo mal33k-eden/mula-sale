@@ -76,7 +76,7 @@ const Seed = {
 
                 }else{
                     stopBusy()
-                    WALLET.showGenModal('Sorry! Your seed amount does not meet the requirement for this round.', 'The minimum amount is $2,500 and the maximum is $10,000');
+                    WALLET.showGenModal('Sorry! Your seed amount does not meet the requirement for this round.', 'The minimum amount is $1,000 and the maximum is $10,000');
                 }
             }
         });
