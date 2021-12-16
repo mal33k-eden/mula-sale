@@ -1,6 +1,6 @@
 const Seed = {
     rate:0.025,
-    minInv:2500,
+    minInv:1000,
     maxInv:10000,
     init :()=>{
         const contributeBtn = $('#contribute');
