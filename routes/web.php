@@ -25,8 +25,11 @@ Route::get('/seed-collection', function () {
 Route::get('/ido', function () {
     return view('ido');
 });
-Route::get('/ieo', function () {
-    return view('ieo');
+Route::get('/ido-collection', function () {
+    return view('ido-collection');
+});
+Route::get('/seed', function () {
+    return view('seed');
 });
 
 Route::get('/sale/verify/{address}/credit/{block}',[\App\Http\Controllers\ScanBSC::class, 'buys']);

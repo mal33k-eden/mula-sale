@@ -12,9 +12,9 @@
 <script src="{{asset('site-assets/js/app.js')}}"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="{{asset('abi/abi.js')}}"></script>
-<script src="{{asset('dapp-js/web3.min.js')}}"></script>
-<script src="{{asset('dapp-js/web3modal.js')}}"></script>
-<script src="{{asset('dapp-js/walletconnect-provider.min.js')}}"></script>
-<script src="{{asset('dapp-js/wallet.js')}}"></script>
+<script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
 <script src="{{asset('dapp-js/contracts.js')}}"></script>
+<script src="https://unpkg.com/moralis/dist/moralis.js"></script>
+<script src="{{asset('dapp-js/dapp.js')}}"></script>
+
 <!--endbuild-->

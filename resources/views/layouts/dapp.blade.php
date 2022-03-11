@@ -35,7 +35,8 @@
 
 <!--build:js-->
 @include('partials/scripts')
-<script src="/dapp-js/seed.js"></script>
+@yield('scripts')
+
 <!--endbuild-->
 </body>
 

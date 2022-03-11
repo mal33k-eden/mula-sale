@@ -11,12 +11,12 @@ class InvestorsRecords extends Controller
     //
 
     public function saveInvestor(Request $request){
-        $input = $request->_data;
-        $name = $input[0]['value'];
-        $email = $input[1]['value'];
-        $cur = $input[2]['value'];
-        $wallet = $input[3]['value'];
-        $amount = $input[4]['value'];
+
+        $name = $request->name;
+        $email = $request->email;
+        $cur = $request->currency;
+        $wallet = $request->wallet;
+        $amount = $request->amount;
         $USD = 0;
         $BNB = 0;
         if ($cur == 'BNB'){

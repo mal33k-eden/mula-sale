@@ -1,8 +1,6 @@
-const SEED = {
-    rate:0.025,
-    minInv:1000,
-    maxInv:10000,
-    init :()=>{
+const IDO = {
+    rate:0.065,
+    init:()=>{
         $('#mula-receiving').hide();
         $('#usd-giving').hide();
         $('input:radio[name="currency"]').change(()=>{
@@ -11,15 +9,13 @@ const SEED = {
             $("#amount").val('')
         });
         $("#amount").keyup(()=>{
-
-            SEED.handleCalculations($("#amount").val(),$('input:radio[name="currency"]:checked').val());
+            IDO.handleCalculations($("#amount").val(),$('input:radio[name="currency"]:checked').val());
 
         });
     },
     handleCalculations(giving,currency){
-
         if (giving > 0){
-            let total = DAPP.tokenExpected(currency,giving,SEED.rate);
+            let total = DAPP.tokenExpected(currency,giving,IDO.rate);
             if(currency == 'BNB'){
                 $('#mula-receiving').html('Receiving : ' + parseFloat(total).toLocaleString(0) + 'MULA');
                 $('#usd-giving').html(' | Giving : ' +parseFloat(DAPP.bnb_price * giving).toLocaleString(0) + 'USD');
@@ -35,28 +31,25 @@ const SEED = {
     },
     handleContribution(){
         $(document).on('click', '#contribute',()=>{
-            let name = $('#name').val()
-            let email = $('#email').val()
-            let wallet = $('#wallet').val()
             let giving = $('#amount').val()
             let currency = $('input:radio[name="currency"]:checked').val()
-            if (giving == '' || name == '' || email == '' || wallet == ''){
-                notifyError('kindly fille out all fields correctly.')
+            if (giving === ''){
+                notifyError('amount field cannot be empty')
             }else{
                 if (currency == 'BNB'){
-                    SEED.contributeBNB(giving,wallet,name,email)
+                    IDO.contributeBNB(giving)
                 }else{
                     showBusy()
                     notifySuccess('USDT transactions will take a bit longer.')
                     notifySuccess('')
                     notifySuccess('Kindly hold while processing completes.')
                     setTimeout(async ()=>{
-                        let allowance = await DAPP.createUSDAllowance(CONTRACT.SEED,giving)
+                        let allowance = await DAPP.createUSDAllowance(CONTRACT.IDO,giving)
                         if (allowance){
                             notifySuccess('Please hold on while the dapp confirms your allowance')
                             setTimeout(()=>{
                                 notifySuccess('Allowance created')
-                                SEED.contributeUSDT(giving,wallet,name,email)
+                                IDO.contributeUSDT(giving)
                             },500)
                         }else{
                             stopBusy()
@@ -69,82 +62,56 @@ const SEED = {
         })
 
     },
-    contributeBNB: async (value,wallet,name,email)=>{
+    contributeBNB: async (value)=>{
 
         showBusy()
         const options = {
-            contractAddress: CONTRACT.SEED,
+            contractAddress: CONTRACT.IDO,
             functionName: 'participateBNB',
-            abi: Abi.SEED,
+            abi: Abi.IDO,
             msgValue: Moralis.Units.ETH(value),
             params: {
-                _roundId: DAPP.BNB_ROUND_ID,collector:wallet
+                _roundId: DAPP.BNB_ROUND_ID,
             },
         };
         const transaction = await Moralis.executeFunction(options);
         const receipt = await transaction.wait(3);
-        SEED.trxConfirmation(receipt,value,'BNB',name,email,wallet)
+        IDO.trxConfirmation(receipt,value,'BNB')
     },
-    contributeUSDT: async (value,wallet,name,email)=>{
+    contributeUSDT: async (value)=>{
         const options = {
-            contractAddress: CONTRACT.SEED,
+            contractAddress: CONTRACT.IDO,
             functionName: 'participateUSDT',
-            abi: Abi.SEED,
+            abi: Abi.IDO,
             params: {
-                _roundId: DAPP.BNB_ROUND_ID,collector:wallet
+                _roundId: DAPP.BNB_ROUND_ID,
             },
         };
         const transaction = await Moralis.executeFunction(options);
         const receipt = await transaction.wait(3);
-        SEED.trxConfirmation(receipt,value,'USDT',name,email,wallet)
+        IDO.trxConfirmation(receipt,value,'USDT')
     },
-    trxConfirmation:(receipt,value,currency,name,email,wallet)=>{
+    trxConfirmation:(receipt,value,currency)=>{
         if (receipt.status == '1' ) {
-            SEED.saveToDB(name,wallet,currency,value,email)
-            let total = DAPP.tokenExpected(currency,value,SEED.rate);
-            $('#name').val('')
-            $('#email').val('')
-            $('#wallet').val('')
-            $('#amount').val('')
+            let total = DAPP.tokenExpected(currency,value,IDO.rate);
+            let formData = $('#amount').val('');
             notifySuccess('Transaction Successful');
             DAPP.showModal(
                 'Your tokens have been provisioned into the vault and will be available for claim as the vesting dates roll-out',
                 'Amount : '+value+ currency,
                 'Number Of Tokens : '+total+'  MULA',
-                'Rate : ' +SEED.rate,
-                receipt.transactionHash
+                'Rate : ' +IDO.rate,
+                 receipt.transactionHash
             );
-
             stopBusy()
         } else {
             notifyError('Transaction Failed')
             stopBusy()
         }
-    },
-    saveToDB:(name,wallet,currency,amount,email)=>{
-
-        $.ajax({
-            url: '/save-seed-investor',
-            type:'get',
-            data: {
-                name:name,
-                email:email,
-                wallet:wallet,
-                currency:currency,
-                amount:amount,
-            },
-            success: function(response) {
-
-               console.log(response)
-                // $('#answers').html(response);
-            }
-        });
-    },
-
-
+    }
 }
 
 $(()=>{
-    SEED.init();
-    SEED.handleContribution()
+    IDO.init()
+    IDO.handleContribution()
 });
