@@ -2,8 +2,8 @@ const DAPP = {
     moralisUrl:"https://sjd9gxsyctno.usemoralis.com:2053/server",
     moralisId:'21Fz6i8ZlSZm9awj55i4GgT433r4AvA6RRwrLHUi',
     init : async ()=>{
-        DAPP.web3  = await Moralis.enableWeb3()
-        DAPP.onChainChange()
+
+
         let serverUrl = DAPP.moralisUrl
         let appId  = DAPP.moralisId
         Moralis.start({serverUrl, appId });
@@ -11,6 +11,7 @@ const DAPP = {
         DAPP.getUser()
         DAPP.connectWallet()
         DAPP.chainLinkPrice()
+        // DAPP.onChainChange()
 
     },
     displayAddress(){
@@ -24,9 +25,12 @@ const DAPP = {
             $("#accountAddress").html('BSC - ' + DAPP.formatAddress(DAPP.address))
         }
     },
-    getUser:()=>{
+    getUser:async ()=>{
         let user = Moralis.User.current();
+        console.log(user)
+
         if (user) {
+            DAPP.web3  = await Moralis.enableWeb3()
             let _address = user.get('ethAddress')
             DAPP.address = _address
             DAPP.displayAddress()
@@ -49,7 +53,9 @@ const DAPP = {
             if (!user) {
                 console.log('has to log')
                 try {
-                    user = await Moralis.authenticate({ signingMessage: "Connect To Mula Finance Sale Dapp" })
+                    DAPP.web3  = await Moralis.enableWeb3()
+                    user = await Moralis.authenticate(
+                        { signingMessage: "Connect To Mula Finance Sale Dapp"})
 
                     user.get('ethAddress')
                     DAPP.getUser()

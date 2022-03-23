@@ -13,6 +13,7 @@
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="{{asset('abi/abi.js')}}"></script>
 <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/walletconnect@1.7.5/dist/esm/index.min.js"></script>
 <script src="{{asset('dapp-js/contracts.js')}}"></script>
 <script src="https://unpkg.com/moralis/dist/moralis.js"></script>
 <script src="{{asset('dapp-js/dapp.js')}}"></script>
